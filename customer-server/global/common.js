@@ -34,35 +34,35 @@ module.exports = {
 
   verifyToken: (req, res, next) => {
     try {
-      next();
+      // next();
 
-      // const bearerHeader = req.headers["authorization"];
-      // if (typeof bearerHeader !== "undefined") {
-      //   const bearer = bearerHeader.split(" ");
-      //   req.token = bearer[1]; // Attach token to request.
-      //   jwt.verify(req.token, config.JWT_SECRET, (err, decoded) => {
-      //     // decoded value s // console.log('decoded', decoded.user);
-      //     if (err) {
-      //       return res.status(401).json({
-      //         success: false,
-      //         message: "Token Error",
-      //         data: err,
-      //       });
-      //     } // Attach decoded user details to request.
-      //     if (!decoded) {
-      //       return res.status(401).end();
-      //     } else {
-      //       req.user = decoded.user;
-      //       next();
-      //     }
-      //   });
-      // } else {
-      //   return res.json({
-      //     success: false,
-      //     message: "Header Authorization Error",
-      //     data: "Header Authorization Error",
-      //   });
-      // }
+      const bearerHeader = req.headers["authorization"];
+      if (typeof bearerHeader !== "undefined") {
+        const bearer = bearerHeader.split(" ");
+        req.token = bearer[1]; // Attach token to request.
+        jwt.verify(req.token, config.JWT_SECRET, (err, decoded) => {
+          // decoded value s // console.log('decoded', decoded.user);
+          if (err) {
+            return res.status(401).json({
+              success: false,
+              message: "Token Error",
+              data: err,
+            });
+          } // Attach decoded user details to request.
+          if (!decoded) {
+            return res.status(401).end();
+          } else {
+            req.user = decoded.user;
+            next();
+          }
+        });
+      } else {
+        return res.json({
+          success: false,
+          message: "Header Authorization Error",
+          data: "Header Authorization Error",
+        });
+      }
     } catch (e) {
       res.status(500).json({
         success: false,

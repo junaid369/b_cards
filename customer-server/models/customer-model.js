@@ -22,13 +22,13 @@ const customerSchema = new mongoose.Schema({
     // required: [true, "Email is required"], // Email field is required
   },
 
-  strCountry: {
+  strPhone: {
     type: String,
-    required: [true, "country is required"], // Name field is required
+    required: [true, "PhoneNo is required"], // Name field is required
   },
   strPassword: {
     type: String,
-    required: [true, "country is required"], // Name field is required
+    required: [true, "password is required"], // Name field is required
   },
 
   strStatus: {

@@ -8,7 +8,6 @@ const config = require("../config/config");
 const moment = require("moment-timezone");
 const nodemailer = require("nodemailer");
 
-
 const arrayEmpty = [];
 
 module.exports = {
@@ -18,13 +17,21 @@ module.exports = {
         fkUserId: new mongoose.Types.ObjectId(),
         strName: obj?.strName,
         strEmail: obj?.strEmail,
-        strCountry: obj?.strCountry,
+        strPhone: obj.strPhone,
         strPassword: obj?.strPassword,
         freeTrial: false,
         strActive: true,
         strStatus: "N",
-        createdAt:config.uaeTime(new Date())
+        createdAt: config.uaeTime(new Date()),
       };
+      let checkEmail = await customer.find({ strEmail: strEmail });
+      if (checkEmail) {
+        return {
+          success: false,
+          message: "The email is already registered.",
+          data: arrayEmpty,
+        };
+      }
 
       let hashpassword = common.setPassword(obj.strPassword);
       if (!hashpassword) {
@@ -362,6 +369,79 @@ module.exports = {
       };
     }
   },
+  funGetTokenDecrypt: async function (obj, db) {
+    try {
+      console.log(jj)
+
+      let userDetails = await customer.aggregate([
+        {
+          $match: {
+            strEmail: strEmail,
+            strStatus: "N",
+          },
+        },
+        {
+          $project: {
+            fkUserId: 1,
+            strEmail: 1,
+            strName: 1,
+            strPassword: 1,
+            freeTrial: 1,
+            strCountry: 1,
+            strActive: true,
+            strStatus: "N",
+            _id: 0,
+          },
+        },
+      ]);
+      if (!userDetails.length > 0)
+        return {
+          success: false,
+          message: "does not matching any documents",
+          data: arrayEmpty,
+        };
+      let objLoginPassword = common.validPassword(strPassword);
+
+      if (userDetails[0].strPassword != objLoginPassword)
+        return {
+          success: false,
+          message: "Does not match the password.",
+          data: [],
+        };
+      let objPasData = {
+        strEmail: obj.strEmail,
+        intUserId: userDetails[0].fkUserId,
+      };
+
+      const token = jwt.sign({ user: objPasData }, config.JWT_SECRET, {
+        expiresIn: "60m",
+      }); // 10 minutes expiration
+
+      if (token) {
+        userDetails[0].token = token;
+
+        return {
+          success: true,
+          message: "Login success",
+          data: userDetails[0],
+        };
+      } else {
+        return {
+          success: false,
+          message: "Token implment failed",
+          data: arrayEmpty,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return {
+        success: false,
+        message: "System:" + error,
+        data: arrayEmpty,
+      };
+    }
+  },
+  // funGetTokenDecrypt
 };
 
 async function sendEmail(otp, email) {
