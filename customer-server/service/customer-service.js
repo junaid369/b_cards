@@ -24,7 +24,7 @@ module.exports = {
         strStatus: "N",
         createdAt: config.uaeTime(new Date()),
       };
-      let checkEmail = await customer.find({ strEmail: strEmail });
+      let checkEmail = await customer.find({ strEmail:obj. strEmail });
       if (checkEmail) {
         return {
           success: false,
