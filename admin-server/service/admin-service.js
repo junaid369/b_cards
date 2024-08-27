@@ -666,17 +666,17 @@ module.exports = {
       let match = { $and: [query1, query2, query3] };
       console.log(match.$and);
 
-      let getAdmin = await Admin.find({
-        fkAdminId: new mongoose.Types.ObjectId(strLoginUserId),
-      });
-      if (!getAdmin.length)
-        return {
-          success: false,
-          message: "not matching the adminid.",
-          data: arrayEmpty,
-        };
+      // let getAdmin = await Admin.find({
+      //   fkAdminId: new mongoose.Types.ObjectId(strLoginUserId),
+      // });
+      // if (!getAdmin.length)
+      //   return {
+      //     success: false,
+      //     message: "not matching the adminid.",
+      //     data: arrayEmpty,
+      //   };
 
-      let getAdminCount = await Admin.find(match).count();
+      let getAdminCount = (await Admin.find(match)).length;
       if (!intPageLimit) {
         intPageLimit = getAdminCount;
       }
