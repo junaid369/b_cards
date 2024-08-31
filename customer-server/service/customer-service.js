@@ -24,7 +24,7 @@ module.exports = {
         strStatus: "N",
         createdAt: config.uaeTime(new Date()),
       };
-      let checkEmail = await customer.find({ strEmail:obj. strEmail });
+      let checkEmail = await customer.find({ strEmail: obj.strEmail });
       if (checkEmail) {
         return {
           success: false,
@@ -84,8 +84,8 @@ module.exports = {
             strEmail: 1,
             strName: 1,
             strPassword: 1,
+            strPhone: 1,
             freeTrial: 1,
-            strCountry: 1,
             strActive: true,
             strStatus: "N",
             _id: 0,
@@ -371,7 +371,7 @@ module.exports = {
   },
   funGetTokenDecrypt: async function (obj, db) {
     try {
-      console.log(jj)
+      console.log(jj);
 
       let userDetails = await customer.aggregate([
         {
