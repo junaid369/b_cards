@@ -28,6 +28,7 @@ module.exports = {
         planName: obj.planName,
         templateLimit: obj.templateLimit,
         customerDomain: obj.customerDomain,
+        Amount: obj.Amount,
         cardSharing: obj.cardSharing,
         appointmentType: obj.appointmentType,
         durationInDays: obj.durationInDays,
@@ -96,6 +97,7 @@ module.exports = {
         planName: obj.planName,
         templateLimit: obj.templateLimit,
         customerDomain: obj.customerDomain,
+        Amount: obj.Amount,
         cardSharing: obj.cardSharing,
         appointmentType: obj.appointmentType,
         durationInDays: obj.durationInDays,
@@ -183,7 +185,7 @@ module.exports = {
           fkPlanId: new mongoose.Types.ObjectId(fkPlanId),
         };
       }
-  
+
       let match = { $and: [query1, query2] };
       let getUserPlans = await Plan.find(match).sort({ sortNo: 1 });
 
@@ -208,5 +210,4 @@ module.exports = {
       };
     }
   },
-
 };

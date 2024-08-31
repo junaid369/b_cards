@@ -13,6 +13,10 @@ const planSchema = new mongoose.Schema({
     required: [true, "plan id is required"], // Name field is required
   },
 
+  Amount: {
+    type: String,
+    required: [true, "Name is required"], // Name field is required
+  },
   planName: {
     type: String,
     required: [true, "Name is required"], // Name field is required
