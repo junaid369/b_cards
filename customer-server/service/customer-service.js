@@ -24,8 +24,9 @@ module.exports = {
         strStatus: "N",
         createdAt: config.uaeTime(new Date()),
       };
-      let checkEmail = await customer.find({ strEmail: obj.strEmail });
-      if (checkEmail) {
+      let checkEmail = await customer.find({ strEmail: obj.strEmail,strStatus:"N" });
+      console.log(checkEmail,"ppppp")
+      if (checkEmail.length) {
         return {
           success: false,
           message: "The email is already registered.",
